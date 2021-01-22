@@ -359,7 +359,7 @@
   ::
   ++  translate
     ^+  poke-core
-    ?+  -.in  poke-core
+    ?-  -.in
     ::
       %add-note      (add-note +.in)
       %archive       (do-archive +.in)
@@ -377,6 +377,8 @@
       %remove-graph  (remove-graph +.in)
       %set-dnd      (set-dnd +.in)
       %seen         seen
+      %read-all     read-all
+    ::
     ==
   ::
   ::  +|  %note
@@ -595,6 +597,16 @@
     =>  (emit cancel-autoseen)
     =>  (emit autoseen-timer)
     poke-core(current-timebox now.bowl)
+  ::
+  ++  read-all
+    =.  unreads-count
+      %-  ~(run by unreads-count)
+      |*(* 0)
+    =.  poke-core  seen
+    %-  ~(rep ^in ~(key by unreads-each))
+    |=  [st=stats-index:store pok=$_(poke-core)]
+    %+  jub-unreads-each:pok  st
+    |=  idx=(set index:graph-store)  *(set index:graph-store)
   ::
   ++  set-dnd
     |=  d=?
